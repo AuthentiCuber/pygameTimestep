@@ -1,0 +1,8 @@
+# pygameTimestep
+
+Implements a decoupled update and rendering to make any code framerate independant.  
+Based on https://gafferongames.com/post/fix_your_timestep/#the-final-touch.
+
+## Requirements
+- Python 3.8+
+- Pygame 
