@@ -5,4 +5,7 @@ Based on https://gafferongames.com/post/fix_your_timestep/#the-final-touch.
 
 ## Requirements
 - Python 3.8+
-- Pygame 
+- Pygame 2.5+
+
+## Why?
+Multiplying everything by deltatime is annoying and sometimes doesn't work
