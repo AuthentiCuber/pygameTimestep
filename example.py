@@ -1,4 +1,3 @@
-import time
 import pygame
 from pygame.locals import *
 import timestep
@@ -12,23 +11,44 @@ screen = pygame.display.set_mode(RESOLUTION)
 pygame.display.set_caption("Timestep Test")
 SCREEN_WIDTH, SCREEN_HEIGHT = screen.get_size()
 
-font = pygame.font.SysFont("Calibri", 40)
-start = False
-start_time = 0
-
 
 class Player(timestep.Character):
     def __init__(self, x: int, y: int) -> None:
         self.image = pygame.Surface((100, 100))
         self.image.fill("red")
         super().__init__(x, y, self.image)
-        self.gravity = pgvec2(0, 0.1)
+        self.gravity = pgvec2(0, 1)
+        self.friction = 0.8
+        self.jumped = False
 
     def update(self) -> None:
         super().update()
 
         self.vel.y += self.gravity.y
+        self.vel.x *= self.friction
+
+        keys = pygame.key.get_pressed()
+        if keys[K_RIGHT]:
+            self.vel.x = 10
+        if keys[K_LEFT]:
+            self.vel.x = -10
+        if keys[K_UP] and not self.jumped:
+            self.vel.y = -15
+            self.jumped = True
+
+        self.rect.x += round(self.vel.x)
         self.rect.y += round(self.vel.y)
+
+        if self.rect.bottom > SCREEN_HEIGHT:
+            self.rect.bottom = SCREEN_HEIGHT
+            self.vel.y = 0
+            self.jumped = False
+        if self.rect.right > SCREEN_WIDTH:
+            self.rect.right = SCREEN_WIDTH
+            self.vel.x = 0
+        elif self.rect.left < 0:
+            self.rect.left = 0
+            self.vel.x = 0
 
 
 player = Player(500, 0)
@@ -36,29 +56,18 @@ player = Player(500, 0)
 
 class game_loop(timestep.Timestep):
     def update(self):
-        global game_running, start_time, start
+        global game_running
         for event in pygame.event.get():
             if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
                 game_running = False
-            if event.type == KEYDOWN:
-                if event.key == K_SPACE and not start:
-                    start = True
-                    start_time = time.time()
 
-        if start:
-            player.update()
+        player.update()
 
     def render(self, alpha):
-        global game_running
 
         screen.fill((0, 0, 0))
 
         player.draw(screen, alpha)
-
-        if player.rect.y >= SCREEN_HEIGHT:
-            finish = time.time() - start_time
-            print(finish)
-            game_running = False
 
         pygame.display.flip()
 

@@ -3,7 +3,6 @@
 import pygame
 import time
 
-
 class Character:
     """Base class for any sprites or objects"""
 
@@ -12,18 +11,20 @@ class Character:
         self.rect = self.image.get_rect()
         self.rect.topleft = x, y
         self.vel = pygame.math.Vector2(0, 0)
-        self.prev_pos = pygame.math.Vector2(self.rect.topleft)
+        self.pos = pygame.math.Vector2(self.rect.topleft)
+        self.prev_pos = self.pos
 
     def update(self) -> None:
-        """Update """
+        """Override this method with movement, input, collisions etc."""
         self.prev_pos = self.__get_rect_pos()
 
     def draw(self, surface: pygame.Surface, alpha: float) -> None:
-        pos = self.prev_pos.lerp(self.__get_rect_pos(), alpha)
-        surface.blit(self.image, pos)
+        """Draw the Character to the screen."""
+        self.pos = self.prev_pos.lerp(self.__get_rect_pos(), alpha)
+        surface.blit(self.image, (round(self.pos.x), round(self.pos.y)))
 
     def __get_rect_pos(self) -> pygame.math.Vector2:
-        """Return the position of the Charater's rect as a Vec2"""
+        """Return the position of the Charater's rect as a Vec2."""
         return pygame.math.Vector2(self.rect.topleft)
 
 
@@ -37,9 +38,9 @@ class Timestep:
 
     def __calc_dt(self) -> float:
         now = time.time()
-        dt = now - self.__last_time
+        self.dt = now - self.__last_time
         self.__last_time = now
-        return dt
+        return self.dt
 
     def update(self) -> None:
         """Override this function with event loop and movement"""
