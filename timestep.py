@@ -8,7 +8,7 @@ class Character:
 
     def __init__(self, x: int, y: int, image: pygame.Surface) -> None:
         self.image = image
-        self.rect = self.image.get_rect()
+        self.rect = self.image.get_frect()
         self.rect.topleft = x, y
         self.vel = pygame.math.Vector2(0, 0)
         self.pos = pygame.math.Vector2(self.rect.topleft)
@@ -21,7 +21,7 @@ class Character:
     def draw(self, surface: pygame.Surface, alpha: float) -> None:
         """Draw the Character to the screen."""
         self.pos = self.prev_pos.lerp(self.__get_rect_pos(), alpha)
-        surface.blit(self.image, (round(self.pos.x), round(self.pos.y)))
+        surface.blit(self.image, self.pos)
 
     def __get_rect_pos(self) -> pygame.math.Vector2:
         """Return the position of the Charater's rect as a Vec2."""

@@ -2,8 +2,6 @@ import pygame
 from pygame.locals import *
 import timestep
 
-pgvec2 = pygame.math.Vector2
-
 pygame.init()
 
 RESOLUTION = pygame.math.Vector2(1000, 600)
@@ -17,7 +15,7 @@ class Player(timestep.Character):
         self.image = pygame.Surface((100, 100))
         self.image.fill("red")
         super().__init__(x, y, self.image)
-        self.gravity = pgvec2(0, 1)
+        self.gravity = pygame.math.Vector2(0, 1)
         self.friction = 0.8
         self.jumped = False
 
@@ -36,8 +34,8 @@ class Player(timestep.Character):
             self.vel.y = -15
             self.jumped = True
 
-        self.rect.x += round(self.vel.x)
-        self.rect.y += round(self.vel.y)
+        self.rect.x += self.vel.x
+        self.rect.y += self.vel.y
 
         if self.rect.bottom > SCREEN_HEIGHT:
             self.rect.bottom = SCREEN_HEIGHT

@@ -5,7 +5,7 @@ Based on Gafferongames ["fix your timestep"](https://gafferongames.com/post/fix_
 
 ## Requirements
 - Python 3.8+
-- Pygame 2.5+
+- Pygame-ce 2.4+
 
 ## Why?
 Multiplying everything by deltatime is annoying and sometimes doesn't work
