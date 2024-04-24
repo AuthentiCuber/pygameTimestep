@@ -3,13 +3,14 @@
 import pygame
 import time
 
+
 class Character:
     """Base class for any sprites or objects"""
 
-    def __init__(self, x: int, y: int, image: pygame.Surface) -> None:
+    def __init__(self, x_pos: float, y_pos: float, image: pygame.Surface) -> None:
         self.image = image
         self.rect = self.image.get_frect()
-        self.rect.topleft = x, y
+        self.rect.topleft = x_pos, y_pos
         self.vel = pygame.math.Vector2(0, 0)
         self.pos = pygame.math.Vector2(self.rect.topleft)
         self.prev_pos = self.pos
@@ -29,7 +30,7 @@ class Character:
 
 
 class Timestep:
-    """Class that does all the calculations to make the game framerate independant"""
+    """Class that does all the calculations to make the game framerate independent"""
 
     def __init__(self, step: float) -> None:
         self.__step = step
