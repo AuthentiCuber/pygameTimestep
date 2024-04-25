@@ -7,22 +7,25 @@ import time
 class Character:
     """Base class for any sprites or objects"""
 
-    def __init__(self, x_pos: float, y_pos: float, image: pygame.Surface) -> None:
+    def __init__(self,
+                 x_pos: float,
+                 y_pos: float,
+                 image: pygame.Surface,
+                 rect: pygame.FRect) -> None:
         self.image = image
-        self.rect = self.image.get_frect()
+        self.rect = rect
         self.rect.topleft = x_pos, y_pos
-        self.vel = pygame.math.Vector2(0, 0)
-        self.pos = pygame.math.Vector2(self.rect.topleft)
-        self.prev_pos = self.pos
+        self.__pos = pygame.math.Vector2(self.rect.topleft)
+        self.__prev_pos = self.__pos
 
     def update(self) -> None:
         """Override this method with movement, input, collisions etc."""
-        self.prev_pos = self.__get_rect_pos()
+        self.__prev_pos = self.__get_rect_pos()
 
     def draw(self, surface: pygame.Surface, alpha: float) -> None:
         """Draw the Character to the screen."""
-        self.pos = self.prev_pos.lerp(self.__get_rect_pos(), alpha)
-        surface.blit(self.image, self.pos)
+        self.__pos = self.__prev_pos.lerp(self.__get_rect_pos(), alpha)
+        surface.blit(self.image, self.__pos)
 
     def __get_rect_pos(self) -> pygame.math.Vector2:
         """Return the position of the Charater's rect as a Vec2."""
@@ -48,7 +51,7 @@ class Timestep:
         pass
 
     def render(self, alpha: float) -> None:
-        """Override this function with blits and drawing of sprites"""
+        """Override this function with blits and drawing of Characters"""
         pass
 
     def run_game(self) -> None:

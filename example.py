@@ -14,8 +14,10 @@ class Player(timestep.Character):
     def __init__(self, x_pos: float, y_pos: float) -> None:
         self.image = pygame.Surface((100, 100))
         self.image.fill("red")
-        super().__init__(x_pos, y_pos, self.image)
+        self.rect = self.image.get_frect()
+        super().__init__(x_pos, y_pos, self.image, self.rect)
         self.gravity = pygame.math.Vector2(0, 1)
+        self.vel = pygame.math.Vector2(0, 0)
         self.friction = 0.8
         self.jumped = False
 
